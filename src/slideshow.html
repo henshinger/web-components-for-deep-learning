@@ -439,20 +439,20 @@ Epoch 2/3
 59/60 [============================&gt;.] - ETA: 52s - loss: 0.0858 - acc: 0.9745 Epoch 00001: val_loss improved from 0.11207 to 0.06089, saving model to ../input/anime_weights.h5
 60/60 [==============================] - 3663s - loss: 0.0849 - acc: 0.9750 - val_loss: 0.0609 - val_acc: 0.9821
 Epoch 3/3
-40/60 [===================&gt;..........] - ETA: 1015s - loss: 0.0660 - acc: 0.9824</pre></div></div><div class="slide"><div class="card"><h1 class="header">Import all the libraries</h1></div><div class="card"><prism-demo code="model.evaluate_generator(test_generator, steps=10)"></prism-demo></div><div class="card"><p>[0.048907476166884102, 0.98999999920527137]</p></div></div><div class="slide"><div class="card"><h1 class="header">Transforming our models</h1></div><div class="card"><img src="lib/images/henshin.gif"></div></div><div class="slide"><div class="card"><h1 class="header">WebDNN</h1></div><div class="card"><p>WebDNN is an open source software framework for executing deep neural network (DNN) pre-trained model on web browser.</p></div></div><div class="slide"><div class="card"><h1 class="header">Transforming the model for the browser</h1></div><div class="card"><prism-demo code="python bin/convert_keras.py anime_weights.h5 --input_shape '(1,224,224,3)' --out output_keras"></prism-demo></div></div><div class="slide"><div class="card"><h1 class="header">That's it???</h1></div><div class="card"><img src="lib/images/sailor-moon.gif"></div></div><div class="slide"><div class="card"><h1 class="header">Combining our Model with our Web Components</h1></div><div class="card"><img src="lib/images/fusion.gif"></div></div><div class="slide"><my-view2></my-view2></div><div class="slide"><div class="card"><h1 class="header">Imageboard Code</h1></div><div class="card"><prism-demo code="<link rel=&quot;import&quot; href=&quot;../bower_components/polymer/polymer-element.html&quot;>
+40/60 [===================&gt;..........] - ETA: 1015s - loss: 0.0660 - acc: 0.9824</pre></div></div><div class="slide"><div class="card"><h1 class="header">Model Results</h1></div><div class="card"><prism-demo code="model.evaluate_generator(test_generator, steps=10)"></prism-demo></div><div class="card"><p>[0.048907476166884102, 0.98999999920527137]</p></div></div><div class="slide"><div class="card"><h1 class="header">Transforming our models</h1></div><div class="card"><img src="lib/images/henshin.gif"></div></div><div class="slide"><div class="card"><h1 class="header">WebDNN</h1></div><div class="card"><p>WebDNN is an open source software framework for executing deep neural network (DNN) pre-trained model on web browser.</p></div></div><div class="slide"><div class="card"><h1 class="header">Transforming the model for the browser</h1></div><div class="card"><prism-demo code="python bin/convert_keras.py anime_weights.h5 --input_shape '(1,224,224,3)' --out output_keras"></prism-demo></div></div><div class="slide"><div class="card"><h1 class="header">That's it???</h1></div><div class="card"><img src="lib/images/sailor-moon.gif"></div></div><div class="slide"><div class="card"><h1 class="header">Combining our Model with our Web Components</h1></div><div class="card"><img src="lib/images/fusion.gif"></div></div><div class="slide"><my-view2></my-view2></div><div class="slide"><div class="card"><h1 class="header">Imageboard Code</h1></div><div class="card"><prism-demo code="<link rel=&quot;import&quot; href=&quot;../bower_components/polymer/polymer-element.html&quot;>
 <link rel=&quot;import&quot; href=&quot;shared-styles.html&quot;>
 <link rel=&quot;import&quot; href=&quot;anime-image-uploader.html&quot;>
 
 <dom-module id=&quot;my-view2&quot;>
   <template>
     <style include=&quot;shared-styles&quot;>
+      /* Applies only to this element */
       :host {
         padding: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        /*height: 80vh*/
       }
       img {
         min-width:290px;
@@ -462,6 +462,7 @@ Epoch 3/3
         font-weight: bold;
         font-size: 2em;
       }
+      /* Uses variables in CSS */
       .pink-text {
         color:var(--paper-pink-500);
       }
@@ -470,11 +471,13 @@ Epoch 3/3
     <div class=&quot;card&quot;>
       <span class=&quot;pink-text&quot;>Best AI Generated Waifu</span>
     </div>
+    <!-- Iterate over images using templates-->
     <template is=&quot;dom-repeat&quot; items=&quot;{{images}}&quot;>
       <div class=&quot;card&quot;>
         <img src=&quot;{{item}}&quot; />
       </div>
     </template>
+    <!-- Place the anime-image-uploader component -->
     <div class=&quot;card&quot;>
       <anime-image-uploader id=&quot;imageUploader&quot;></anime-image-uploader>
     </div>
@@ -482,8 +485,11 @@ Epoch 3/3
   </template>
 
   <script>
+    // Define our Polymer Element
     class MyView2 extends Polymer.Element {
+      //Define our tag name
       static get is() { return &quot;my-view2&quot;; }
+      //Define the properties
       static get properties() {
         return {
           imageUploaded: {
@@ -495,6 +501,7 @@ Epoch 3/3
           }
         }
       }
+      // Add event listeners during one-time initialization
       ready() {
         super.ready();
         this.$.imageUploader.addEventListener(&quot;submitImage&quot;, (e)=> {
@@ -502,7 +509,7 @@ Epoch 3/3
         })
       }
     }
-
+    // Define the custom element for our view.
     window.customElements.define(MyView2.is, MyView2);
   </script>
 </dom-module>"></prism-demo></div></div><div class="slide"><div class="card"><h1 class="header">Upload Component Code</h1></div><div class="card"><prism-demo code="<link rel=&quot;import&quot; href=&quot;../bower_components/polymer/polymer-element.html&quot;>
@@ -557,11 +564,12 @@ Epoch 3/3
         --paper-progress-secondary-color: var(--paper-pink-100);
       }
     </style>
+      <!-- Conditional Templates -->
       <template is=&quot;dom-if&quot; if=&quot;{{!loaded}}&quot;>
         <paper-progress value={{progress}} class=&quot;pink&quot;></paper-progress>
       </template>
       <template is=&quot;dom-if&quot; if=&quot;{{loaded}}&quot;>
-       
+        <!-- Attaching event handlers to an element -->
          <canvas id=&quot;imageCanvas&quot; height=&quot;{{height}}&quot; width=&quot;{{width}}&quot; on-submitImage=&quot;loaded&quot;></canvas>
          <span>{{message}}</span>
         <paper-button raised class=&quot;uploadButton pink&quot; on-click=&quot;triggerUpload&quot;>
@@ -586,6 +594,7 @@ Epoch 3/3
             type: Number,
             value: 0
           },
+          // Specifying how this property will be computed
           loaded: {
             type: Boolean,
             computed: &quot;computeLoaded(progress)&quot;
@@ -624,14 +633,14 @@ Epoch 3/3
           }
         }
       }
-
+      // Load our WebDNN Model when ready.
       async ready() {
         super.ready();
         this.runner = await WebDNN.load(&quot;lib/output_keras&quot;, {
             progressCallback: (loaded, total) => this.set(&quot;progress&quot;, 100*loaded/total)
         });
       }
-
+      // Computing for computed properties
       computeLoaded (progress) {
         return progress == 100;
       }
@@ -663,7 +672,7 @@ Epoch 3/3
       triggerUpload() {
         this.shadowRoot.querySelector(&quot;#imageLoader&quot;).click()
       }
-
+      // loading image from file
       async getImageFromFile(image) {
           return new Promise((resolve, reject) => {
               let reader = new FileReader();
@@ -674,7 +683,7 @@ Epoch 3/3
               reader.readAsDataURL(image);
           });
       }
-
+      //let my-view2 know the image that has been uploaded and set the relevant state to trigger the observers.
       submitImage() {
           let event = new CustomEvent(&quot;submitImage&quot;, {
             bubbles: true, 
@@ -687,7 +696,7 @@ Epoch 3/3
           this.set(&quot;imageData&quot;, &quot;&quot;);
           this.set(&quot;firstTime&quot;, true);
       }
-
+      // load Image to canvas and trigger observers
       async loadImage(e) {
           let dataURL = await this.getImageFromFile(e.target.files[0]);
           this.set(&quot;imageData&quot;, dataURL);
@@ -698,7 +707,7 @@ Epoch 3/3
           
           this.run()
       }
-
+      // Compute for the probability it is anime and set the relevant properties to trigger observers.
       async run() {
           this.runner.getInputViews()[0].set(await WebDNN.Image.getImageArray(this.shadowRoot.querySelector(&quot;#imageCanvas&quot;), {
               order: WebDNN.Image.Order.HWC,
